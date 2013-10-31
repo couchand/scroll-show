@@ -7,7 +7,11 @@ main = (argv) ->
   if !argv[1]?
     console.log "Usage: #{argv[0]} URL_FILE"
     return
-  urls = fs.readFileSync(argv[1]).toString().split('\n').map((s) -> s.trim()).filter (s) -> s isnt ''
+  urls = fs.readFileSync(argv[1])
+    .toString()
+    .split('\n')
+    .map((s) -> s.trim())
+    .filter (s) -> s isnt ''
   scrollShow urls
 
 main process.argv.slice 1
