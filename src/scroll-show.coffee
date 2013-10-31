@@ -2,7 +2,7 @@
 
 webdriver = require 'selenium-webdriver'
 
-module.exports = (pages) ->
+module.exports = (pages, delay=15) ->
   return if !pages? or pages.length is 0
 
   driver = new webdriver.Builder()
@@ -19,7 +19,7 @@ module.exports = (pages) ->
                            pageScroll();
                            """).then ->
         console.log "waiting"
-        driver.sleep(10000).then ->
+        driver.sleep(1000 * delay).then ->
           p = pages.shift()
           if p?
             loadPage p
