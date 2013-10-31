@@ -2,7 +2,7 @@
 
 webdriver = require 'selenium-webdriver'
 
-module.exports = (pages, repeat=yes, delay=15) ->
+module.exports = (pages, repeat=yes, delay=15, startDelay=delay*100) ->
   return if !pages? or pages.length is 0
 
   _pages = pages.slice()
@@ -24,7 +24,7 @@ module.exports = (pages, repeat=yes, delay=15) ->
                                else
                                  scrolldelay = setTimeout(pageScroll,#{delay});
                            }
-                           pageScroll();
+                           setTimeout(pageScroll,#{startDelay});
                            """).then ->
         p = _pages.shift()
         if p?
