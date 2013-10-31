@@ -2,8 +2,10 @@
 
 webdriver = require 'selenium-webdriver'
 
-module.exports = (pages, delay=15) ->
+module.exports = (pages, repeat=yes, delay=15) ->
   return if !pages? or pages.length is 0
+
+  _pages = pages.slice()
 
   driver = new webdriver.Builder()
     .withCapabilities(webdriver.Capabilities.firefox())
@@ -24,10 +26,14 @@ module.exports = (pages, delay=15) ->
                            }
                            pageScroll();
                            """).then ->
-        p = pages.shift()
+        p = _pages.shift()
         if p?
           loadPage p
         else
-          driver.quit()
+          if repeat
+            _pages = pages.slice()
+            loadPage _pages.shift()
+          else
+            driver.quit()
 
-  loadPage pages.shift()
+  loadPage _pages.shift()
