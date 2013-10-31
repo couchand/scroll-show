@@ -9,7 +9,7 @@ module.exports = (pages, delay=15) ->
     .withCapabilities(webdriver.Capabilities.firefox())
     .build()
 
-  driver.manage().timeouts().setScriptTimeout 100000
+  driver.manage().timeouts().setScriptTimeout 3*60*1000
 
   loadPage = (page) ->
     driver.get(page).then ->
