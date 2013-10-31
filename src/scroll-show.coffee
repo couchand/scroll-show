@@ -7,6 +7,8 @@ module.exports = (pages, repeat=yes, delay=15, startDelay=delay*100) ->
 
   _pages = pages.slice()
 
+  console.log "Loading driver..."
+
   driver = new webdriver.Builder()
     .withCapabilities(webdriver.Capabilities.firefox())
     .build()
@@ -14,7 +16,9 @@ module.exports = (pages, repeat=yes, delay=15, startDelay=delay*100) ->
   driver.manage().timeouts().setScriptTimeout 3*60*1000
 
   loadPage = (page) ->
+    console.log "Navigating to #{page}..."
     driver.get(page).then ->
+      console.log "Auto-scrolling..."
       driver.executeAsyncScript("""
                            var cb = arguments[arguments.length - 1];
                            function pageScroll() {
@@ -31,6 +35,7 @@ module.exports = (pages, repeat=yes, delay=15, startDelay=delay*100) ->
           loadPage p
         else
           if repeat
+            console.log "\nRepeating..."
             _pages = pages.slice()
             loadPage _pages.shift()
           else
