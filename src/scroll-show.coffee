@@ -3,20 +3,27 @@
 webdriver = require 'selenium-webdriver'
 
 module.exports = (pages) ->
+  return if !pages? or pages.length is 0
+
   driver = new webdriver.Builder()
     .withCapabilities(webdriver.Capabilities.firefox())
     .build()
 
-  pages.forEach (page) ->
-    driver.get page
-    driver.executeScript """
-                         function pageScroll() {
-                             window.scrollBy(0,1);
-                             scrolldelay = setTimeout(pageScroll,10);
-                         }
-                         pageScroll();
-                         """
-    console.log "waiting"
-    driver.wait 10000
+  loadPage = (page) ->
+    driver.get(page).then ->
+      driver.executeScript("""
+                           function pageScroll() {
+                               window.scrollBy(0,1);
+                               scrolldelay = setTimeout(pageScroll,10);
+                           }
+                           pageScroll();
+                           """).then ->
+        console.log "waiting"
+        driver.sleep(10000).then ->
+          p = pages.shift()
+          if p?
+            loadPage p
+          else
+            driver.quit()
 
-  driver.quit()
+  loadPage pages.shift()
