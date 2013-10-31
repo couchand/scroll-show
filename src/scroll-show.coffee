@@ -9,21 +9,25 @@ module.exports = (pages, delay=15) ->
     .withCapabilities(webdriver.Capabilities.firefox())
     .build()
 
+  driver.manage().timeouts().setScriptTimeout 100000
+
   loadPage = (page) ->
     driver.get(page).then ->
-      driver.executeScript("""
+      driver.executeAsyncScript("""
+                           var cb = arguments[arguments.length - 1];
                            function pageScroll() {
                                window.scrollBy(0,1);
-                               scrolldelay = setTimeout(pageScroll,10);
+                               if (document.documentElement.scrollTop == document.documentElement.scrollTopMax)
+                                 cb();
+                               else
+                                 scrolldelay = setTimeout(pageScroll,10);
                            }
                            pageScroll();
                            """).then ->
-        console.log "waiting"
-        driver.sleep(1000 * delay).then ->
-          p = pages.shift()
-          if p?
-            loadPage p
-          else
-            driver.quit()
+        p = pages.shift()
+        if p?
+          loadPage p
+        else
+          driver.quit()
 
   loadPage pages.shift()
