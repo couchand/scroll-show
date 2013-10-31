@@ -20,7 +20,7 @@ module.exports = (pages, delay=15) ->
                                if (document.documentElement.scrollTop == document.documentElement.scrollTopMax)
                                  cb();
                                else
-                                 scrolldelay = setTimeout(pageScroll,10);
+                                 scrolldelay = setTimeout(pageScroll,#{delay});
                            }
                            pageScroll();
                            """).then ->
