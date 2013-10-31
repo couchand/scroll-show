@@ -1,0 +1,14 @@
+#!/usr/bin/coffee
+
+fs = require 'fs'
+scrollShow = require './src/scroll-show'
+
+main = (argv) ->
+  if !argv[1]?
+    console.log "Usage: #{argv[0]} URL_FILE"
+    return
+  urls = fs.readFileSync(argv[1]).toString().split('\n').map((s) -> s.trim()).filter (s) -> s isnt ''
+  console.log JSON.stringify urls
+  scrollShow urls
+
+main process.argv.slice 1
