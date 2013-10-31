@@ -1,0 +1,8 @@
+{
+  "name": "scroll-show",
+  "description": "Use a list of web pages as a crude slideshow, auto-scrolling to the bottom of each.",
+  "version": "0.0.1",
+  "dependencies": {
+    "selenium-webdriver": "~2.37.0"
+  }
+}
